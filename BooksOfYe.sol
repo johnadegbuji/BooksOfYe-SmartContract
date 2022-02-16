@@ -23,7 +23,6 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     uint256 public maxSupply = 1000;
     uint256 public mintLimit = 8;
     string public baseURI;
-    string public contractBaseURI;
 
     mapping(uint256 => string) private _URIS;
     mapping(address => uint256) private cardPurchaseTracker;
@@ -364,15 +363,6 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         baseURI = _newURI;
     }
 
-    function setContractURI(string memory _newContractURI)
-        public
-        pure
-        returns (string memory)
-    {
-        contractBaseURI = _newContractURI;
-        return contractBaseURI;
-    }
-
     //Misc Functions
 
     function uri(uint256 _tokenId)
@@ -388,6 +378,10 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
             string(
                 abi.encodePacked(baseURI, Strings.toString(_tokenId), ".json")
             );
+    }
+
+    function contractURI() public view returns (string memory) {
+        return "ipfs://QmcCVnnRiy7TAgREHxKJJrcZLCSBmz2fYm1Lum5vjVY6Ge";
     }
 
     function _beforeTokenTransfer(
