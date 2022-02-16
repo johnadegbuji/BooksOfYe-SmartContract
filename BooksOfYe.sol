@@ -25,7 +25,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     string public baseURI;
 
     mapping(uint256 => string) private _URIS;
-    mapping(address => uint256) private cardPurchaseTracker;
+    mapping(address => uint256) public cardPurchaseTracker;
     mapping(uint256 => address) public tokenOwners;
 
     constructor() ERC1155(baseURI) {
