@@ -354,8 +354,9 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
             1;
     }
 
-    function withdraw() public onlyOwner {
-        payable(0xc52312c28Cb2EDbc0Feab48A929eB780f7031B48).transfer(address(this).balance);
+     function withdraw(address payable _to) public onlyOwner {
+        require(_to != address(0), "Wallet cannot be zero address.");
+        _to.transfer(address(this).balance);
     }
 
     function setTokenURI(string memory _newURI) public onlyOwner {
