@@ -14,7 +14,8 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         bool isActive;
         bool isPreSale;
         bool isPublicSale;
-        mapping(uint256 => bool) cardsForSale;
+        uint256 minCardId;
+        uint256 maxCardId;
         mapping(address => bool) whitelist;
         uint256 whitelistCount;
     }
@@ -26,6 +27,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
 
     mapping(uint256 => string) private _URIS;
     mapping(address => uint256) public cardPurchaseTracker;
+    mapping(address => bool) private luckTracker;
     mapping(uint256 => address) public tokenOwners;
 
     constructor() ERC1155(baseURI) {
@@ -34,32 +36,6 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         SaleEvent storage saleEvent3 = saleEvents.push();
         SaleEvent storage saleEvent4 = saleEvents.push();
         SaleEvent storage saleEvent5 = saleEvents.push();
-
-        for (uint256 i = 0; i <= 4; i++) {
-            saleEvents[i].isPreSale = false;
-            saleEvents[i].isPublicSale = false;
-        }
-
-        for (uint256 i = 0; i <= 199; i++) {
-            saleEvent1.cardsForSale[i] = true;
-            saleEvent1.price = 200000000000000000;
-        }
-        for (uint256 i = 200; i <= 399; i++) {
-            saleEvent2.cardsForSale[i] = true;
-            saleEvent2.price = 600000000000000000;
-        }
-        for (uint256 i = 400; i <= 599; i++) {
-            saleEvent3.cardsForSale[i] = true;
-            saleEvent3.price = 1800000000000000000;
-        }
-        for (uint256 i = 600; i <= 799; i++) {
-            saleEvent4.cardsForSale[i] = true;
-            saleEvent4.price = 5400000000000000000;
-        }
-        for (uint256 i = 800; i <= 999; i++) {
-            saleEvent5.cardsForSale[i] = true;
-            saleEvent5.price = 16200000000000000000;
-        }
     }
 
     //Public Functions
@@ -67,7 +43,8 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     function preSaleMint(uint256 eventNumber, uint256 cardId) public payable {
         uint256 nextEventNumber = eventNumber + 1;
         uint256 price = saleEvents[eventNumber].price;
-
+        uint256 minCardId = saleEvents[eventNumber].minCardId;
+        uint256 maxCardId = saleEvents[eventNumber].maxCardId;
         require(saleEvents[eventNumber].isActive, "Sale Is Not Active");
         require(
             saleEvents[eventNumber].isPreSale &&
@@ -79,10 +56,9 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
             "Sorry You Aren't On The Whitelist"
         );
         require(
-            saleEvents[eventNumber].cardsForSale[cardId],
-            "This Card Is Not For Sale"
+            cardId >= minCardId && cardId <= maxCardId,
+            "This Card Is Not For Sale Or Doesn't Exist"
         );
-        require(cardId < 1000, "The Card Number Selected Does Not Exist");
         require(
             maxSupply - 1 >= 0,
             "Sorry, There Aren't Anymore Available Cards"
@@ -95,14 +71,32 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
             cardPurchaseTracker[msg.sender] != mintLimit,
             "Sorry, You've Hit The Mint Limit"
         );
-
         require(msg.value >= price, "You Didn't Send Enough Ether");
 
+        if (luckTracker[msg.sender]) {
+            cardId = cardId + 1;
+        }
+
         _mint(msg.sender, cardId, 1, "");
+
         tokenOwners[cardId] = msg.sender;
         maxSupply = maxSupply - 1;
         cardPurchaseTracker[msg.sender] = cardPurchaseTracker[msg.sender] + 1;
-
+        if (cardId == 0) {
+            luckTracker[msg.sender] = true;
+        }
+        if (cardId == 200) {
+            luckTracker[msg.sender] = true;
+        }
+        if (cardId == 400) {
+            luckTracker[msg.sender] = true;
+        }
+        if (cardId == 600) {
+            luckTracker[msg.sender] = true;
+        }
+        if (cardId == 800) {
+            luckTracker[msg.sender] = true;
+        }
         if (nextEventNumber <= 4) {
             saleEvents[nextEventNumber].whitelist[msg.sender] = true;
             saleEvents[nextEventNumber].whitelistCount =
@@ -114,6 +108,8 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     function publicMint(uint256 eventNumber, uint256 cardId) public payable {
         uint256 nextEventNumber = eventNumber + 1;
         uint256 price = saleEvents[eventNumber].price;
+        uint256 minCardId = saleEvents[eventNumber].minCardId;
+        uint256 maxCardId = saleEvents[eventNumber].maxCardId;
 
         require(saleEvents[eventNumber].isActive, "Sale Is Not Active");
         require(
@@ -122,10 +118,9 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
             "Public Sale Is Not Live"
         );
         require(
-            saleEvents[eventNumber].cardsForSale[cardId],
-            "This Card Is Not For Sale"
+            cardId >= minCardId && cardId <= maxCardId,
+            "This Card Is Not For Sale Or Doesn't Exist"
         );
-        require(cardId < 1000, "The Card Number Selected Does Not Exist");
         require(
             maxSupply - 1 >= 0,
             "Sorry, There Aren't Anymore Available Cards"
@@ -141,11 +136,30 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
 
         require(msg.value >= price, "You Didn't Send Enough Ether");
 
+        if (luckTracker[msg.sender]) {
+            cardId = cardId + 1;
+        }
+
         _mint(msg.sender, cardId, 1, "");
+
         tokenOwners[cardId] = msg.sender;
         maxSupply = maxSupply - 1;
         cardPurchaseTracker[msg.sender] = cardPurchaseTracker[msg.sender] + 1;
-
+        if (cardId == 0) {
+            luckTracker[msg.sender] = true;
+        }
+        if (cardId == 200) {
+            luckTracker[msg.sender] = true;
+        }
+        if (cardId == 400) {
+            luckTracker[msg.sender] = true;
+        }
+        if (cardId == 600) {
+            luckTracker[msg.sender] = true;
+        }
+        if (cardId == 800) {
+            luckTracker[msg.sender] = true;
+        }
         if (nextEventNumber <= 4) {
             saleEvents[nextEventNumber].whitelist[msg.sender] = true;
             saleEvents[nextEventNumber].whitelistCount =
@@ -158,7 +172,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         address previousHolder = tokenOwners[cardId];
         require(
             balanceOf(msg.sender, cardId) > 0,
-            "You Don't Have This Card In Your Wallet."
+            "You Don't Have Any Cards In Your Wallet."
         );
         require(
             !saleEvents[eventNumber].isActive,
@@ -166,7 +180,10 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         );
 
         for (uint256 i = 0; i <= 4; i++) {
-            if (saleEvents[i].whitelist[previousHolder]) {
+            if (
+                saleEvents[i].whitelist[previousHolder] &&
+                saleEvents[i].whitelistCount != 0
+            ) {
                 saleEvents[i].whitelistCount = saleEvents[i].whitelistCount - 1;
             }
             saleEvents[i].whitelist[previousHolder] = false;
@@ -195,28 +212,22 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
 
     //Only Owner Functions
 
-    function giftMint(
-        address _address,
-        uint256 cardId,
-        uint256 addToWhichWhitelist
-    ) public onlyOwner {
-        require(cardId < 1000, "The Card Number Selected Does Not Exist");
-        require(
-            maxSupply - 1 >= 0,
-            "Sorry, There Aren't Anymore Available Cards"
-        );
-        require(
-            !exists(cardId),
-            "Sorry This Card Already Belongs To Someone Else"
-        );
-
-        _mint(_address, cardId, 1, "");
-        tokenOwners[cardId] = _address;
-        maxSupply = maxSupply - 1;
-        saleEvents[addToWhichWhitelist].whitelist[_address] = true;
-        saleEvents[addToWhichWhitelist].whitelistCount =
-            saleEvents[addToWhichWhitelist].whitelistCount +
-            1;
+    function setPriceAndInventory() public onlyOwner {
+        saleEvents[0].price = 200000000000000000;
+        saleEvents[1].price = 600000000000000000;
+        saleEvents[2].price = 1800000000000000000;
+        saleEvents[3].price = 5400000000000000000;
+        saleEvents[4].price = 16200000000000000000;
+        saleEvents[0].minCardId = 0;
+        saleEvents[1].minCardId = 200;
+        saleEvents[2].minCardId = 400;
+        saleEvents[3].minCardId = 600;
+        saleEvents[4].minCardId = 800;
+        saleEvents[0].maxCardId = 199;
+        saleEvents[1].maxCardId = 399;
+        saleEvents[2].maxCardId = 599;
+        saleEvents[3].maxCardId = 799;
+        saleEvents[4].maxCardId = 999;
     }
 
     function batchGiftMint(
@@ -235,10 +246,10 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
             );
             require(
                 !exists(cardId[i]),
-                "Sorry This Card Already Belongs To Someone Else"
+                "A Card Selected Already Belongs To Someone Else"
             );
 
-            _mint(_addresses[i], cardId[i], 1, "");
+            _mint(_addresses[i], cardId[i], 1, "0x");
             maxSupply = maxSupply - cardId.length;
             tokenOwners[cardId[i]] = _addresses[i];
             saleEvents[addToWhichWhitelist].whitelist[_addresses[i]] = true;
@@ -246,6 +257,28 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
                 saleEvents[addToWhichWhitelist].whitelistCount +
                 1;
         }
+    }
+
+    function editSaleMinCardId(
+        uint256 eventNumber,
+        uint256 _newMin,
+        uint256 _newMax
+    ) public onlyOwner {
+        require(
+            _newMin >= 0 && _newMin < 999,
+            "Your new minimum is either below 0 or over 999"
+        );
+        require(
+            _newMax >= 0 && _newMax < 999,
+            "Your new maximum is either below 0 or over 999"
+        );
+        require(
+            _newMin != _newMax,
+            "Your minimum and maximum cannot be the same number"
+        );
+
+        saleEvents[eventNumber].minCardId = _newMin;
+        saleEvents[eventNumber].maxCardId = _newMax;
     }
 
     function editSaleStatus(
@@ -273,7 +306,9 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
             uint256 whitelistCount,
             bool isActive,
             bool isPreSale,
-            bool isPublicSale
+            bool isPublicSale,
+            uint256 minCardId,
+            uint256 maxCardId
         )
     {
         price = saleEvents[eventNumber].price;
@@ -281,7 +316,17 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         isActive = saleEvents[eventNumber].isActive;
         isPreSale = saleEvents[eventNumber].isPreSale;
         isPublicSale = saleEvents[eventNumber].isPublicSale;
-        return (price, whitelistCount, isActive, isPreSale, isPublicSale);
+        minCardId = saleEvents[eventNumber].minCardId;
+        maxCardId = saleEvents[eventNumber].maxCardId;
+        return (
+            price,
+            whitelistCount,
+            isActive,
+            isPreSale,
+            isPublicSale,
+            minCardId,
+            maxCardId
+        );
     }
 
     function editSalePrice(uint256 eventNumber, uint256 _newPriceInWei)
@@ -290,24 +335,6 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     {
         require(eventNumber <= 4);
         saleEvents[eventNumber].price = _newPriceInWei;
-    }
-
-    function addCardToSale(uint256 eventNumber, uint256 cardId)
-        public
-        onlyOwner
-    {
-        require(eventNumber <= 4);
-        require(!saleEvents[eventNumber].cardsForSale[cardId]);
-        saleEvents[eventNumber].cardsForSale[cardId] = true;
-    }
-
-    function removeCardFromSale(uint256 eventNumber, uint256 cardId)
-        public
-        onlyOwner
-    {
-        require(eventNumber <= 4);
-        require(saleEvents[eventNumber].cardsForSale[cardId]);
-        saleEvents[eventNumber].cardsForSale[cardId] = false;
     }
 
     function batchAddToWhitelist(
@@ -327,6 +354,10 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         uint256 eventNumber
     ) public onlyOwner {
         for (uint256 i = 0; i < _addresses.length; i++) {
+            require(
+                saleEvents[eventNumber].whitelist[_addresses[i]] != false,
+                "One of these users is already not on WL. Use the Check WhiteList function to solve"
+            );
             saleEvents[eventNumber].whitelist[_addresses[i]] = false;
             saleEvents[eventNumber].whitelistCount =
                 saleEvents[eventNumber].whitelistCount -
@@ -334,28 +365,8 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         }
     }
 
-    function addToWhitelist(address _address, uint256 eventNumber)
-        public
-        onlyOwner
-    {
-        saleEvents[eventNumber].whitelist[_address] = true;
-        saleEvents[eventNumber].whitelistCount =
-            saleEvents[eventNumber].whitelistCount +
-            1;
-    }
-
-    function removeFromWhitelist(address _address, uint256 eventNumber)
-        public
-        onlyOwner
-    {
-        saleEvents[eventNumber].whitelist[_address] = false;
-        saleEvents[eventNumber].whitelistCount =
-            saleEvents[eventNumber].whitelistCount -
-            1;
-    }
-
-     function withdraw(address payable _to) public onlyOwner {
-        require(_to != address(0), "Wallet cannot be zero address.");
+    function withdraw(address payable _to) public onlyOwner {
+        require(_to != address(0), "Token cannot be zero address.");
         _to.transfer(address(this).balance);
     }
 
@@ -363,26 +374,11 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         baseURI = _newURI;
     }
 
-    //Misc Functions
-
-    function uri(uint256 _tokenId)
-        public
-        view
-        override
-        returns (string memory)
-    {
-        if (bytes(_URIS[_tokenId]).length != 0) {
-            return string(_URIS[_tokenId]);
-        }
-        return
-            string(
-                abi.encodePacked(baseURI, Strings.toString(_tokenId), ".json")
-            );
-    }
-
     function contractURI() public pure returns (string memory) {
         return "ipfs://QmcCVnnRiy7TAgREHxKJJrcZLCSBmz2fYm1Lum5vjVY6Ge";
     }
+
+    //Misc Functions
 
     function _beforeTokenTransfer(
         address operator,
