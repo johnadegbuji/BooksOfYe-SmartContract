@@ -4,7 +4,7 @@
 
 // OpenZeppelin Contracts v4.4.1 (utils/Strings.sol)
 
-pragma solidity ^0.8.0;
+pragma solidity 0.8.0;
 
 /**
  * @dev String operations.
@@ -1382,7 +1382,7 @@ abstract contract ERC1155Burnable is ERC1155 {
 
 // File: contracts/BooksOfYe.sol
 
-pragma solidity 0.8.0;
+pragma solidity ^0.8.0;
 
 contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     struct SaleEvent {
