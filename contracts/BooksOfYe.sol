@@ -204,7 +204,11 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         }
     }
 
-    function editMinMaxCardId(uint128 eventNumber, uint128 _newMin, uint128 _newMax) public onlyOwner {
+    function editMinMaxCardId(
+        uint128 eventNumber,
+        uint128 _newMin,
+        uint128 _newMax
+    ) public onlyOwner {
         require(
             _newMin >= 0 && _newMin < 999,
             "Your new minimum is either below 0 or over 999"
@@ -278,10 +282,15 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         saleEvents[eventNumber].price = _newPriceInWei;
     }
 
-    function batchAddToWhitelist(address[] memory _addresses, uint128 eventNumber) public onlyOwner {
+    function batchAddToWhitelist(
+        address[] memory _addresses,
+        uint128 eventNumber
+    ) public onlyOwner {
         for (uint128 i = 0; i < _addresses.length; i++) {
             saleEvents[eventNumber].whitelist[_addresses[i]] = true;
-            saleEvents[eventNumber].whitelistCount = saleEvents[eventNumber].whitelistCount +1;
+            saleEvents[eventNumber].whitelistCount =
+                saleEvents[eventNumber].whitelistCount +
+                1;
         }
     }
 
