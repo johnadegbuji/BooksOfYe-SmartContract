@@ -2,6 +2,7 @@
 
 // File: @openzeppelin/contracts/utils/Strings.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (utils/Strings.sol)
 
 pragma solidity ^0.8.0;
@@ -56,11 +57,7 @@ library Strings {
     /**
      * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.
      */
-    function toHexString(uint256 value, uint256 length)
-        internal
-        pure
-        returns (string memory)
-    {
+    function toHexString(uint256 value, uint256 length) internal pure returns (string memory) {
         bytes memory buffer = new bytes(2 * length + 2);
         buffer[0] = "0";
         buffer[1] = "x";
@@ -74,6 +71,7 @@ library Strings {
 }
 
 // File: @openzeppelin/contracts/utils/Context.sol
+
 
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
@@ -101,9 +99,11 @@ abstract contract Context {
 
 // File: @openzeppelin/contracts/access/Ownable.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (access/Ownable.sol)
 
 pragma solidity ^0.8.0;
+
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -120,10 +120,7 @@ pragma solidity ^0.8.0;
 abstract contract Ownable is Context {
     address private _owner;
 
-    event OwnershipTransferred(
-        address indexed previousOwner,
-        address indexed newOwner
-    );
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
@@ -163,10 +160,7 @@ abstract contract Ownable is Context {
      * Can only be called by the current owner.
      */
     function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(
-            newOwner != address(0),
-            "Ownable: new owner is the zero address"
-        );
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
         _transferOwnership(newOwner);
     }
 
@@ -182,6 +176,7 @@ abstract contract Ownable is Context {
 }
 
 // File: @openzeppelin/contracts/utils/Address.sol
+
 
 // OpenZeppelin Contracts v4.4.1 (utils/Address.sol)
 
@@ -237,16 +232,10 @@ library Address {
      * https://solidity.readthedocs.io/en/v0.5.11/security-considerations.html#use-the-checks-effects-interactions-pattern[checks-effects-interactions pattern].
      */
     function sendValue(address payable recipient, uint256 amount) internal {
-        require(
-            address(this).balance >= amount,
-            "Address: insufficient balance"
-        );
+        require(address(this).balance >= amount, "Address: insufficient balance");
 
         (bool success, ) = recipient.call{value: amount}("");
-        require(
-            success,
-            "Address: unable to send value, recipient may have reverted"
-        );
+        require(success, "Address: unable to send value, recipient may have reverted");
     }
 
     /**
@@ -267,10 +256,7 @@ library Address {
      *
      * _Available since v3.1._
      */
-    function functionCall(address target, bytes memory data)
-        internal
-        returns (bytes memory)
-    {
+    function functionCall(address target, bytes memory data) internal returns (bytes memory) {
         return functionCall(target, data, "Address: low-level call failed");
     }
 
@@ -304,13 +290,7 @@ library Address {
         bytes memory data,
         uint256 value
     ) internal returns (bytes memory) {
-        return
-            functionCallWithValue(
-                target,
-                data,
-                value,
-                "Address: low-level call with value failed"
-            );
+        return functionCallWithValue(target, data, value, "Address: low-level call with value failed");
     }
 
     /**
@@ -325,15 +305,10 @@ library Address {
         uint256 value,
         string memory errorMessage
     ) internal returns (bytes memory) {
-        require(
-            address(this).balance >= value,
-            "Address: insufficient balance for call"
-        );
+        require(address(this).balance >= value, "Address: insufficient balance for call");
         require(isContract(target), "Address: call to non-contract");
 
-        (bool success, bytes memory returndata) = target.call{value: value}(
-            data
-        );
+        (bool success, bytes memory returndata) = target.call{value: value}(data);
         return verifyCallResult(success, returndata, errorMessage);
     }
 
@@ -343,17 +318,8 @@ library Address {
      *
      * _Available since v3.3._
      */
-    function functionStaticCall(address target, bytes memory data)
-        internal
-        view
-        returns (bytes memory)
-    {
-        return
-            functionStaticCall(
-                target,
-                data,
-                "Address: low-level static call failed"
-            );
+    function functionStaticCall(address target, bytes memory data) internal view returns (bytes memory) {
+        return functionStaticCall(target, data, "Address: low-level static call failed");
     }
 
     /**
@@ -379,16 +345,8 @@ library Address {
      *
      * _Available since v3.4._
      */
-    function functionDelegateCall(address target, bytes memory data)
-        internal
-        returns (bytes memory)
-    {
-        return
-            functionDelegateCall(
-                target,
-                data,
-                "Address: low-level delegate call failed"
-            );
+    function functionDelegateCall(address target, bytes memory data) internal returns (bytes memory) {
+        return functionDelegateCall(target, data, "Address: low-level delegate call failed");
     }
 
     /**
@@ -439,6 +397,7 @@ library Address {
 
 // File: @openzeppelin/contracts/utils/introspection/IERC165.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
 
 pragma solidity ^0.8.0;
@@ -466,9 +425,11 @@ interface IERC165 {
 
 // File: @openzeppelin/contracts/utils/introspection/ERC165.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165.sol)
 
 pragma solidity ^0.8.0;
+
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -488,22 +449,18 @@ abstract contract ERC165 is IERC165 {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override
-        returns (bool)
-    {
+    function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
         return interfaceId == type(IERC165).interfaceId;
     }
 }
 
 // File: @openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (token/ERC1155/IERC1155Receiver.sol)
 
 pragma solidity ^0.8.0;
+
 
 /**
  * @dev _Available since v3.1._
@@ -554,9 +511,11 @@ interface IERC1155Receiver is IERC165 {
 
 // File: @openzeppelin/contracts/token/ERC1155/IERC1155.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (token/ERC1155/IERC1155.sol)
 
 pragma solidity ^0.8.0;
+
 
 /**
  * @dev Required interface of an ERC1155 compliant contract, as defined in the
@@ -568,13 +527,7 @@ interface IERC1155 is IERC165 {
     /**
      * @dev Emitted when `value` tokens of token type `id` are transferred from `from` to `to` by `operator`.
      */
-    event TransferSingle(
-        address indexed operator,
-        address indexed from,
-        address indexed to,
-        uint256 id,
-        uint256 value
-    );
+    event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value);
 
     /**
      * @dev Equivalent to multiple {TransferSingle} events, where `operator`, `from` and `to` are the same for all
@@ -592,11 +545,7 @@ interface IERC1155 is IERC165 {
      * @dev Emitted when `account` grants or revokes permission to `operator` to transfer their tokens, according to
      * `approved`.
      */
-    event ApprovalForAll(
-        address indexed account,
-        address indexed operator,
-        bool approved
-    );
+    event ApprovalForAll(address indexed account, address indexed operator, bool approved);
 
     /**
      * @dev Emitted when the URI for token type `id` changes to `value`, if it is a non-programmatic URI.
@@ -614,10 +563,7 @@ interface IERC1155 is IERC165 {
      *
      * - `account` cannot be the zero address.
      */
-    function balanceOf(address account, uint256 id)
-        external
-        view
-        returns (uint256);
+    function balanceOf(address account, uint256 id) external view returns (uint256);
 
     /**
      * @dev xref:ROOT:erc1155.adoc#batch-operations[Batched] version of {balanceOf}.
@@ -647,10 +593,7 @@ interface IERC1155 is IERC165 {
      *
      * See {setApprovalForAll}.
      */
-    function isApprovedForAll(address account, address operator)
-        external
-        view
-        returns (bool);
+    function isApprovedForAll(address account, address operator) external view returns (bool);
 
     /**
      * @dev Transfers `amount` tokens of token type `id` from `from` to `to`.
@@ -695,9 +638,11 @@ interface IERC1155 is IERC165 {
 
 // File: @openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (token/ERC1155/extensions/IERC1155MetadataURI.sol)
 
 pragma solidity ^0.8.0;
+
 
 /**
  * @dev Interface of the optional ERC1155MetadataExtension interface, as defined
@@ -717,9 +662,16 @@ interface IERC1155MetadataURI is IERC1155 {
 
 // File: @openzeppelin/contracts/token/ERC1155/ERC1155.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (token/ERC1155/ERC1155.sol)
 
 pragma solidity ^0.8.0;
+
+
+
+
+
+
 
 /**
  * @dev Implementation of the basic standard multi-token.
@@ -750,13 +702,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        virtual
-        override(ERC165, IERC165)
-        returns (bool)
-    {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
         return
             interfaceId == type(IERC1155).interfaceId ||
             interfaceId == type(IERC1155MetadataURI).interfaceId ||
@@ -784,17 +730,8 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
      *
      * - `account` cannot be the zero address.
      */
-    function balanceOf(address account, uint256 id)
-        public
-        view
-        virtual
-        override
-        returns (uint256)
-    {
-        require(
-            account != address(0),
-            "ERC1155: balance query for the zero address"
-        );
+    function balanceOf(address account, uint256 id) public view virtual override returns (uint256) {
+        require(account != address(0), "ERC1155: balance query for the zero address");
         return _balances[id][account];
     }
 
@@ -812,10 +749,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         override
         returns (uint256[] memory)
     {
-        require(
-            accounts.length == ids.length,
-            "ERC1155: accounts and ids length mismatch"
-        );
+        require(accounts.length == ids.length, "ERC1155: accounts and ids length mismatch");
 
         uint256[] memory batchBalances = new uint256[](accounts.length);
 
@@ -829,24 +763,14 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
     /**
      * @dev See {IERC1155-setApprovalForAll}.
      */
-    function setApprovalForAll(address operator, bool approved)
-        public
-        virtual
-        override
-    {
+    function setApprovalForAll(address operator, bool approved) public virtual override {
         _setApprovalForAll(_msgSender(), operator, approved);
     }
 
     /**
      * @dev See {IERC1155-isApprovedForAll}.
      */
-    function isApprovedForAll(address account, address operator)
-        public
-        view
-        virtual
-        override
-        returns (bool)
-    {
+    function isApprovedForAll(address account, address operator) public view virtual override returns (bool) {
         return _operatorApprovals[account][operator];
     }
 
@@ -907,20 +831,10 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         address operator = _msgSender();
 
-        _beforeTokenTransfer(
-            operator,
-            from,
-            to,
-            _asSingletonArray(id),
-            _asSingletonArray(amount),
-            data
-        );
+        _beforeTokenTransfer(operator, from, to, _asSingletonArray(id), _asSingletonArray(amount), data);
 
         uint256 fromBalance = _balances[id][from];
-        require(
-            fromBalance >= amount,
-            "ERC1155: insufficient balance for transfer"
-        );
+        require(fromBalance >= amount, "ERC1155: insufficient balance for transfer");
         unchecked {
             _balances[id][from] = fromBalance - amount;
         }
@@ -948,10 +862,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         uint256[] memory amounts,
         bytes memory data
     ) internal virtual {
-        require(
-            ids.length == amounts.length,
-            "ERC1155: ids and amounts length mismatch"
-        );
+        require(ids.length == amounts.length, "ERC1155: ids and amounts length mismatch");
         require(to != address(0), "ERC1155: transfer to the zero address");
 
         address operator = _msgSender();
@@ -963,10 +874,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
             uint256 amount = amounts[i];
 
             uint256 fromBalance = _balances[id][from];
-            require(
-                fromBalance >= amount,
-                "ERC1155: insufficient balance for transfer"
-            );
+            require(fromBalance >= amount, "ERC1155: insufficient balance for transfer");
             unchecked {
                 _balances[id][from] = fromBalance - amount;
             }
@@ -975,14 +883,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         emit TransferBatch(operator, from, to, ids, amounts);
 
-        _doSafeBatchTransferAcceptanceCheck(
-            operator,
-            from,
-            to,
-            ids,
-            amounts,
-            data
-        );
+        _doSafeBatchTransferAcceptanceCheck(operator, from, to, ids, amounts, data);
     }
 
     /**
@@ -1029,26 +930,12 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         address operator = _msgSender();
 
-        _beforeTokenTransfer(
-            operator,
-            address(0),
-            to,
-            _asSingletonArray(id),
-            _asSingletonArray(amount),
-            data
-        );
+        _beforeTokenTransfer(operator, address(0), to, _asSingletonArray(id), _asSingletonArray(amount), data);
 
         _balances[id][to] += amount;
         emit TransferSingle(operator, address(0), to, id, amount);
 
-        _doSafeTransferAcceptanceCheck(
-            operator,
-            address(0),
-            to,
-            id,
-            amount,
-            data
-        );
+        _doSafeTransferAcceptanceCheck(operator, address(0), to, id, amount, data);
     }
 
     /**
@@ -1067,10 +954,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         bytes memory data
     ) internal virtual {
         require(to != address(0), "ERC1155: mint to the zero address");
-        require(
-            ids.length == amounts.length,
-            "ERC1155: ids and amounts length mismatch"
-        );
+        require(ids.length == amounts.length, "ERC1155: ids and amounts length mismatch");
 
         address operator = _msgSender();
 
@@ -1082,14 +966,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         emit TransferBatch(operator, address(0), to, ids, amounts);
 
-        _doSafeBatchTransferAcceptanceCheck(
-            operator,
-            address(0),
-            to,
-            ids,
-            amounts,
-            data
-        );
+        _doSafeBatchTransferAcceptanceCheck(operator, address(0), to, ids, amounts, data);
     }
 
     /**
@@ -1109,14 +986,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         address operator = _msgSender();
 
-        _beforeTokenTransfer(
-            operator,
-            from,
-            address(0),
-            _asSingletonArray(id),
-            _asSingletonArray(amount),
-            ""
-        );
+        _beforeTokenTransfer(operator, from, address(0), _asSingletonArray(id), _asSingletonArray(amount), "");
 
         uint256 fromBalance = _balances[id][from];
         require(fromBalance >= amount, "ERC1155: burn amount exceeds balance");
@@ -1140,10 +1010,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         uint256[] memory amounts
     ) internal virtual {
         require(from != address(0), "ERC1155: burn from the zero address");
-        require(
-            ids.length == amounts.length,
-            "ERC1155: ids and amounts length mismatch"
-        );
+        require(ids.length == amounts.length, "ERC1155: ids and amounts length mismatch");
 
         address operator = _msgSender();
 
@@ -1154,10 +1021,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
             uint256 amount = amounts[i];
 
             uint256 fromBalance = _balances[id][from];
-            require(
-                fromBalance >= amount,
-                "ERC1155: burn amount exceeds balance"
-            );
+            require(fromBalance >= amount, "ERC1155: burn amount exceeds balance");
             unchecked {
                 _balances[id][from] = fromBalance - amount;
             }
@@ -1219,15 +1083,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         bytes memory data
     ) private {
         if (to.isContract()) {
-            try
-                IERC1155Receiver(to).onERC1155Received(
-                    operator,
-                    from,
-                    id,
-                    amount,
-                    data
-                )
-            returns (bytes4 response) {
+            try IERC1155Receiver(to).onERC1155Received(operator, from, id, amount, data) returns (bytes4 response) {
                 if (response != IERC1155Receiver.onERC1155Received.selector) {
                     revert("ERC1155: ERC1155Receiver rejected tokens");
                 }
@@ -1248,18 +1104,10 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         bytes memory data
     ) private {
         if (to.isContract()) {
-            try
-                IERC1155Receiver(to).onERC1155BatchReceived(
-                    operator,
-                    from,
-                    ids,
-                    amounts,
-                    data
-                )
-            returns (bytes4 response) {
-                if (
-                    response != IERC1155Receiver.onERC1155BatchReceived.selector
-                ) {
+            try IERC1155Receiver(to).onERC1155BatchReceived(operator, from, ids, amounts, data) returns (
+                bytes4 response
+            ) {
+                if (response != IERC1155Receiver.onERC1155BatchReceived.selector) {
                     revert("ERC1155: ERC1155Receiver rejected tokens");
                 }
             } catch Error(string memory reason) {
@@ -1270,11 +1118,7 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
         }
     }
 
-    function _asSingletonArray(uint256 element)
-        private
-        pure
-        returns (uint256[] memory)
-    {
+    function _asSingletonArray(uint256 element) private pure returns (uint256[] memory) {
         uint256[] memory array = new uint256[](1);
         array[0] = element;
 
@@ -1284,9 +1128,11 @@ contract ERC1155 is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
 // File: @openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (token/ERC1155/extensions/ERC1155Supply.sol)
 
 pragma solidity ^0.8.0;
+
 
 /**
  * @dev Extension of ERC1155 that adds tracking of total supply per id.
@@ -1342,9 +1188,11 @@ abstract contract ERC1155Supply is ERC1155 {
 
 // File: @openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol
 
+
 // OpenZeppelin Contracts v4.4.1 (token/ERC1155/extensions/ERC1155Burnable.sol)
 
 pragma solidity ^0.8.0;
+
 
 /**
  * @dev Extension of {ERC1155} that allows token holders to destroy both their
@@ -1382,7 +1230,14 @@ abstract contract ERC1155Burnable is ERC1155 {
 
 // File: contracts/BooksOfYe.sol
 
+
+
 pragma solidity ^0.8.0;
+
+
+
+
+
 
 contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     struct SaleEvent {
@@ -1397,7 +1252,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
 
     SaleEvent[] saleEvents;
     uint256[] public mintedCards;
-
+       
     uint256 public maxSupply = 1000;
     uint256 public mintLimit = 8;
     string public baseURI;
@@ -1405,6 +1260,8 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     mapping(uint256 => string) private _URIS;
     mapping(address => uint256) public cardPurchaseTracker;
     mapping(address => bool) private luckTracker;
+
+
 
     constructor() ERC1155(baseURI) {
         SaleEvent storage saleEvent1 = saleEvents.push();
@@ -1422,35 +1279,25 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         uint256 minCardId = saleEvents[eventNumber].minCardId;
         uint256 maxCardId = saleEvents[eventNumber].maxCardId;
 
-        require(
-            saleEvents[eventNumber].whitelist[msg.sender],
-            "You Aren't On The Whitelist"
-        );
+        require(saleEvents[eventNumber].whitelist[msg.sender],"You Aren't On The Whitelist");
         require(tx.origin == msg.sender, "No Proxy Contracts");
         require(saleEvents[eventNumber].isActive, "Sale Is Not Active");
-        require(
-            saleEvents[eventNumber].isPreSale &&
-                !saleEvents[eventNumber].isPublicSale,
-            "PreSale Not Live"
-        );
-        require(
-            cardId >= minCardId && cardId <= maxCardId,
-            "Card Not For Sale"
-        );
+        require(saleEvents[eventNumber].isPreSale && !saleEvents[eventNumber].isPublicSale, "PreSale Not Live");
+        require(cardId >= minCardId && cardId <= maxCardId, "Card Not For Sale");
         require(_maxSupply - 1 >= 0, "Sold Out");
         require(!exists(cardId), "Card Is Already Minted");
-        require(
-            cardPurchaseTracker[msg.sender] != mintLimit,
-            "Mint Limit Reached"
-        );
+        require(cardPurchaseTracker[msg.sender] != mintLimit,"Mint Limit Reached");
         require(msg.value >= price, "Not Enough Ether Sent");
 
         _mint(msg.sender, cardId, 1, "");
 
+
         maxSupply = _maxSupply - 1;
         cardPurchaseTracker[msg.sender] = cardPurchaseTracker[msg.sender] + 1;
         mintedCards.push(cardId);
-    }
+        
+        
+}
 
     function publicMint(uint256 eventNumber, uint256 cardId) external payable {
         uint256 price = saleEvents[eventNumber].price;
@@ -1460,29 +1307,23 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
 
         require(tx.origin == msg.sender, "No Proxy Contracts");
         require(saleEvents[eventNumber].isActive, "Sale Is Not Active");
-        require(
-            !saleEvents[eventNumber].isPreSale &&
-                saleEvents[eventNumber].isPublicSale,
-            "Public Not Live"
-        );
-        require(
-            cardId >= minCardId && cardId <= maxCardId,
-            "Card Not For Sale"
-        );
+        require(!saleEvents[eventNumber].isPreSale && saleEvents[eventNumber].isPublicSale, "Public Not Live");
+        require(cardId >= minCardId && cardId <= maxCardId,"Card Not For Sale");
         require(_maxSupply - 1 >= 0, "Sold Out");
         require(!exists(cardId), "Card Is Already Minted");
-        require(
-            cardPurchaseTracker[msg.sender] != mintLimit,
-            "Mint Limit Reached"
-        );
+        require(cardPurchaseTracker[msg.sender] != mintLimit,"Mint Limit Reached");
         require(msg.value >= price, "Not Enough Ether Sent");
 
         _mint(msg.sender, cardId, 1, "");
+                
 
         maxSupply = _maxSupply - 1;
         cardPurchaseTracker[msg.sender] = cardPurchaseTracker[msg.sender] + 1;
         mintedCards.push(cardId);
+
+
     }
+
 
     function checkWhitelist(uint256 eventNumber, address _address)
         external
@@ -1493,11 +1334,8 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         return isUserWL;
     }
 
-    function viewMintedCards()
-        external
-        view
-        returns (uint256[] memory allMintedCards)
-    {
+
+    function viewMintedCards() external view returns (uint256[] memory allMintedCards){
         allMintedCards = mintedCards;
         return allMintedCards;
     }
@@ -1505,6 +1343,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     //Only Owner Functions
 
     function setPriceAndInventory() external onlyOwner {
+        
         saleEvents[0].price = 200000000000000000;
         saleEvents[1].price = 600000000000000000;
         saleEvents[2].price = 1800000000000000000;
@@ -1520,12 +1359,14 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         saleEvents[2].maxCardId = 599;
         saleEvents[3].maxCardId = 799;
         saleEvents[4].maxCardId = 999;
+
+       
     }
 
-    function batchGiftMint(address[] memory _addresses, uint256[] memory cardId)
-        external
-        onlyOwner
-    {
+    function batchGiftMint(
+        address[] memory _addresses,
+        uint256[] memory cardId
+    ) external onlyOwner {
         for (uint256 i = 0; i < _addresses.length; i++) {
             require(
                 cardId[i] < 1000,
@@ -1542,7 +1383,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
 
             _mint(_addresses[i], cardId[i], 1, "0x");
             maxSupply = maxSupply - cardId.length;
-            mintedCards.push(i);
+            mintedCards.push(cardId[i]);
         }
     }
 
@@ -1602,7 +1443,14 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
         isPublicSale = saleEvents[eventNumber].isPublicSale;
         minCardId = saleEvents[eventNumber].minCardId;
         maxCardId = saleEvents[eventNumber].maxCardId;
-        return (price, isActive, isPreSale, isPublicSale, minCardId, maxCardId);
+        return (
+            price,
+            isActive,
+            isPreSale,
+            isPublicSale,
+            minCardId,
+            maxCardId
+        );
     }
 
     function editSalePrice(uint256 eventNumber, uint256 _newPriceInWei)
@@ -1619,6 +1467,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     ) external onlyOwner {
         for (uint256 i = 0; i < _addresses.length; i++) {
             saleEvents[eventNumber].whitelist[_addresses[i]] = true;
+            
         }
     }
 
@@ -1632,6 +1481,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
                 "One of these users is already not on WL. Use the Check WhiteList function to solve"
             );
             saleEvents[eventNumber].whitelist[_addresses[i]] = false;
+        
         }
     }
 
@@ -1649,7 +1499,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
     }
 
     //Misc Functions
-
+    
     function uri(uint256 _tokenId)
         public
         view

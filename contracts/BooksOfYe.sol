@@ -152,7 +152,7 @@ contract BooksOfYe is ERC1155, Ownable, ERC1155Burnable, ERC1155Supply {
 
             _mint(_addresses[i], cardId[i], 1, "0x");
             maxSupply = maxSupply - cardId.length;
-            mintedCards.push(i);
+            mintedCards.push(cardId[i]);
         }
     }
 
